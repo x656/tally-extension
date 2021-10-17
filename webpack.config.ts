@@ -23,6 +23,7 @@ const baseConfig: Configuration = {
     ui: "./src/ui.ts",
     background: "./src/background.ts",
     "background-ui": "./src/background-ui.ts",
+    "ledger-bridge": "./src/ledger-bridge.ts",
     // Don't have these yet.....
     // inpage: './src/inpage.js',
     // "content-script": './src/content-script.js'

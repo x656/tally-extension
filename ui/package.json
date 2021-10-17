@@ -23,10 +23,15 @@
     "watch": "webpack --mode=development --watch"
   },
   "dependencies": {
+    "@ledgerhq/hw-app-eth": "^6.9.0",
+    "@ledgerhq/hw-transport-webusb": "^6.7.0",
+    "@ledgerhq/live-common": "^21.8.2",
     "@reduxjs/toolkit": "^1.6.0",
     "@tallyho/tally-background": "0.0.1",
+    "@types/w3c-web-usb": "^1.0.5",
     "classnames": "^2.3.1",
     "dayjs": "^1.10.6",
+    "import": "^0.0.6",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
