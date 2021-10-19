@@ -10,10 +10,11 @@ import logger from "./lib/logger"
 import { ethersTxFromTx } from "./services/chain/utils"
 
 import {
-  PreferenceService,
   ChainService,
   IndexingService,
   KeyringService,
+  LedgerBridgeService,
+  PreferenceService,
   ServiceCreatorFunction,
 } from "./services"
 
@@ -134,12 +135,14 @@ export default class Main extends BaseService<never> {
       chainService
     )
     const keyringService = KeyringService.create()
+    const ledgerBridgeService = LedgerBridgeService.create(chainService)
 
     return new this(
       await preferenceService,
       await chainService,
       await indexingService,
-      await keyringService
+      await keyringService,
+      await ledgerBridgeService
     )
   }
 
@@ -165,7 +168,13 @@ export default class Main extends BaseService<never> {
      * accounts, and signs messagees and transactions. The promise will be
      * resolved when the service is initialized.
      */
-    private keyringService: KeyringService
+    private keyringService: KeyringService,
+    /**
+     * A promise to the Ledger bridge service, responsible for communicating
+     * with Ledger devices over WebUSB. The promise will be resolved when the
+     * service is initialized.
+     */
+    private ledgerBridgeService: LedgerBridgeService
   ) {
     super()
 
@@ -190,6 +199,7 @@ export default class Main extends BaseService<never> {
       this.chainService.startService(),
       this.indexingService.startService(),
       this.keyringService.startService(),
+      this.ledgerBridgeService.startService(),
     ])
   }
 
@@ -199,6 +209,7 @@ export default class Main extends BaseService<never> {
       this.chainService.stopService(),
       this.indexingService.stopService(),
       this.keyringService.stopService(),
+      this.ledgerBridgeService.stopService(),
     ])
 
     await super.internalStopService()
