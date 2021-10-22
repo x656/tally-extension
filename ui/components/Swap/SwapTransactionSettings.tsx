@@ -2,8 +2,14 @@ import React, { ReactElement, useState } from "react"
 import SharedSlideUpMenu from "../Shared/SharedSlideUpMenu"
 import SharedButton from "../Shared/SharedButton"
 import SharedNetworkFeeGroup from "../Shared/SharedNetworkFeeGroup"
+import SharedTransactionExpiryGroup from "../Shared/SharedTransactionExpiryGroup"
 
-export default function SwapTransactionSettings(): ReactElement {
+interface Props {
+  activeActivity: string
+}
+
+export default function SwapTransactionSettings(props: Props): ReactElement {
+  const { activeActivity } = props
   const [isSlideUpMenuOpen, setIsSlideUpMenuOpen] = useState(false)
 
   function handleClick() {
@@ -19,20 +25,35 @@ export default function SwapTransactionSettings(): ReactElement {
           setIsSlideUpMenuOpen(false)
         }}
       >
-        <div className="settings_wrap">
-          <div className="row row_slippage">
-            <span className="settings_label">Slippage tolerance</span>
-            <SharedButton type="secondary" size="medium" icon="chevron">
-              1%
-            </SharedButton>
+        {activeActivity === "swap" && (
+          <div className="settings_wrap">
+            <div className="row row_slippage">
+              <span className="settings_label">Slippage tolerance</span>
+              <SharedButton type="secondary" size="medium" icon="chevron">
+                1%
+              </SharedButton>
+            </div>
+            <div className="row row_fee">
+              <span className="settings_label settings_label_fee">
+                Transaction Fee/Speed
+              </span>
+              <br />
+              <SharedNetworkFeeGroup />
+            </div>
           </div>
-          <div className="row row_fee">
-            <span className="settings_label settings_label_fee">
-              Transaction Fee/Speed
-            </span>
-            <SharedNetworkFeeGroup />
+        )}
+        {activeActivity === "limit_order_swap" && (
+          <div className="settings_wrap">
+            <div className="row row_expiry">
+              <span className="settings_label settings_label_expiry">
+                Transaction expiry
+              </span>
+              <br />
+              <br />
+              <SharedTransactionExpiryGroup />
+            </div>
           </div>
-        </div>
+        )}
       </SharedSlideUpMenu>
       <div className="top_label label">
         Transaction settings
@@ -40,20 +61,34 @@ export default function SwapTransactionSettings(): ReactElement {
           <span className="icon_cog" />
         </button>
       </div>
-      <div className="labels_wrap standard_width">
-        <span className="label">
-          Slippage tolerance
-          <div className="info">1%</div>
-        </span>
-        <span className="label">
-          Network Fee/Speed
-          <div className="info">{"$24 / Fast <1min"}</div>
-        </span>
-      </div>
+      {activeActivity === "swap" && (
+        <div className="labels_wrap standard_width">
+          <span className="label">
+            Slippage tolerance
+            <div className="info">1%</div>
+          </span>
+          <span className="label">
+            Network Fee/Speed
+            <div className="info">{"$24 / Fast <1min"}</div>
+          </span>
+        </div>
+      )}
+      {activeActivity === "limit_order_swap" && (
+        <div className="labels_wrap standard_width">
+          <span className="label">
+            Transaction expiry
+            <div className="info">1 hour</div>
+          </span>
+          <span className="label">
+            KeeperDAO’s Keeper network will execute your order as soon as it
+            finds sufficient liquidity, and if it finds MEV, you’ll receive
+            $ROOK.
+          </span>
+        </div>
+      )}
       <style jsx>
         {`
           .labels_wrap {
-            height: 72px;
             border-radius: 4px;
             background-color: var(--green-95);
             padding: 16px;
@@ -76,6 +111,9 @@ export default function SwapTransactionSettings(): ReactElement {
             flex-direction: column;
             align-items: flex-start;
           }
+          .row_expiry {
+            display: block;
+          }
           .settings_label {
             height: 17px;
             color: var(--green-40);
@@ -84,7 +122,7 @@ export default function SwapTransactionSettings(): ReactElement {
             letter-spacing: 0.42px;
             line-height: 16px;
           }
-          .settings_label_fee {
+          .settings_label_fee .settings_label_expiry {
             margin-bottom: 7px;
           }
           .icon_cog {

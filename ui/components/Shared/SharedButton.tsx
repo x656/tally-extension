@@ -16,6 +16,7 @@ interface Props {
   icon?: string
   iconSize?: "small" | "medium" | "large" | "secondaryMedium"
   iconPosition?: "left" | "right"
+  fontSize?: "small" | "medium"
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
   isDisabled?: boolean
   linkTo?: History.LocationDescriptor<unknown>
@@ -32,6 +33,7 @@ export default function SharedButton(props: Props): ReactElement {
     iconSize,
     iconPosition,
     linkTo,
+    fontSize,
   } = props
 
   const [navigateTo, setNavigateTo] =
@@ -54,6 +56,7 @@ export default function SharedButton(props: Props): ReactElement {
       className={classNames(
         { large: size === "large" },
         { small: size === "small" },
+        { smallFont: fontSize === "small" },
         { secondary: type === "secondary" },
         { disabled: isDisabled },
         { tertiary: type === "tertiary" },
@@ -89,7 +92,7 @@ export default function SharedButton(props: Props): ReactElement {
             letter-spacing: 0.48px;
             line-height: 24px;
             text-align: center;
-            padding: 0 17px;
+            padding: 0 12px;
           }
           button:hover {
             background-color: var(--gold-80);
@@ -212,6 +215,9 @@ export default function SharedButton(props: Props): ReactElement {
             padding: 0 12px;
             height: 32px;
             font-size: 16px;
+          }
+          .smallFont {
+            font-size: 14px;
           }
           .warning {
             background-color: var(--attention);

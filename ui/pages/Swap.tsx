@@ -10,6 +10,7 @@ import SwapTransactionSettings from "../components/Swap/SwapTransactionSettings"
 export default function Swap(): ReactElement {
   const [openTokenMenu, setOpenTokenMenu] = useState(false)
   const [selectedCount, setSelectedCount] = useState(0)
+  const [activeActivity, setActiveActivity] = useState("swap")
 
   const handleClick = useCallback(() => {
     setOpenTokenMenu((isCurrentlyOpen) => !isCurrentlyOpen)
@@ -27,10 +28,27 @@ export default function Swap(): ReactElement {
           close={handleClick}
           size="large"
         >
-          <SwapQoute />
+          <SwapQoute activeActivity={activeActivity} />
         </SharedSlideUpMenu>
         <div className="standard_width">
-          <SharedActivityHeader label="Swap Assets" activity="swap" />
+          <span aria-hidden="true" onClick={() => setActiveActivity("swap")}>
+            <SharedActivityHeader
+              inactive={activeActivity !== "swap"}
+              label="Swap"
+              activity="swap"
+            />
+          </span>
+          <span className="activity_separator">•</span>
+          <span
+            aria-hidden="true"
+            onClick={() => setActiveActivity("limit_order_swap")}
+          >
+            <SharedActivityHeader
+              inactive={activeActivity !== "limit_order_swap"}
+              label="Limit"
+              activity="limit_order_swap"
+            />
+          </span>
           <div className="form">
             <div className="form_input">
               <SharedAssetInput
@@ -46,7 +64,7 @@ export default function Swap(): ReactElement {
               />
             </div>
             <div className="settings_wrap">
-              <SwapTransactionSettings />
+              <SwapTransactionSettings activeActivity={activeActivity} />
             </div>
             <div className="footer standard_width_padded">
               {selectedCount < 2 ? (
@@ -56,7 +74,8 @@ export default function Swap(): ReactElement {
                   isDisabled
                   onClick={handleClick}
                 >
-                  Review swap
+                  {activeActivity === "swap" && "Review swap"}
+                  {activeActivity === "limit_order_swap" && "Review order"}
                 </SharedButton>
               ) : (
                 <SharedButton type="primary" size="large" onClick={handleClick}>
@@ -75,6 +94,11 @@ export default function Swap(): ReactElement {
           }
           .network_fee_button {
             margin-right: 16px;
+          }
+          .activity_separator {
+            font-size: 30px;
+            margin-right: 4px;
+            margin-left: 4px;
           }
           .label_right {
             margin-right: 6px;

@@ -5,7 +5,12 @@ import SwapQuoteAssetCard from "./SwapQuoteAssetCard"
 import SwapTransactionSettings from "./SwapTransactionSettings"
 import SwapApprovalStep from "./SwapApprovalStep"
 
-export default function SwapQoute(): ReactElement {
+interface Props {
+  activeActivity: string
+}
+
+export default function SwapQoute(props: Props): ReactElement {
+  const { activeActivity } = props
   const [stepComplete, setStepComplete] = useState(-1)
 
   const handleApproveClick = useCallback(() => {
@@ -31,7 +36,7 @@ export default function SwapQoute(): ReactElement {
       </div>
       <span className="label label_right">1 ETH = 9,843 KEEP</span>
       <div className="settings_wrap">
-        <SwapTransactionSettings />
+        <SwapTransactionSettings activeActivity={activeActivity} />
       </div>
       {stepComplete > -1 ? (
         <>
