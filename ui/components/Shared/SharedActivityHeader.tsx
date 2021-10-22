@@ -3,19 +3,20 @@ import React, { ReactElement } from "react"
 interface Props {
   label: string
   activity: string
+  inactive?: boolean
 }
 
 export default function SharedActivityHeader(props: Props): ReactElement {
-  const { label, activity } = props
+  const { label, activity, inactive } = props
 
   return (
     <h1>
       <span className="icon_activity" />
-      {label}
+      <span className={inactive ? "inactive" : ""}>{label}</span>
       <style jsx>
         {`
           h1 {
-            display: flex;
+            display: inline-flex;
             align-items: center;
             margin-bottom: 25px;
             margin-top: 17px;
@@ -31,6 +32,12 @@ export default function SharedActivityHeader(props: Props): ReactElement {
             width: 24px;
             height: 24px;
             margin-right: 8px;
+          }
+          .active {
+            opacity: 1;
+          }
+          .inactive {
+            opacity: 0.5;
           }
         `}
       </style>
