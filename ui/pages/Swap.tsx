@@ -1,6 +1,7 @@
 import React, { ReactElement, useCallback, useState } from "react"
 import CorePage from "../components/Core/CorePage"
 import SharedAssetInput from "../components/Shared/SharedAssetInput"
+import SharedLimitOrderPrice from "../components/Shared/SharedLimitOrderPrice"
 import SharedButton from "../components/Shared/SharedButton"
 import SharedSlideUpMenu from "../components/Shared/SharedSlideUpMenu"
 import SwapQoute from "../components/Swap/SwapQuote"
@@ -49,41 +50,92 @@ export default function Swap(): ReactElement {
               activity="limit_order_swap"
             />
           </span>
-          <div className="form">
-            <div className="form_input">
-              <SharedAssetInput
-                onAssetSelected={handleAssetSelect}
-                label="Swap from:"
-              />
+          {activeActivity === "swap" && (
+            <div className="form">
+              <div className="form_input">
+                <SharedAssetInput
+                  onAssetSelected={handleAssetSelect}
+                  label="Swap from:"
+                />
+              </div>
+              <div className="icon_change" />
+              <div className="form_input">
+                <SharedAssetInput
+                  onAssetSelected={handleAssetSelect}
+                  label="Swap to:"
+                />
+              </div>
+              <div className="settings_wrap">
+                <SwapTransactionSettings activeActivity={activeActivity} />
+              </div>
+              <div className="footer standard_width_padded">
+                {selectedCount < 2 ? (
+                  <SharedButton
+                    type="primary"
+                    size="large"
+                    isDisabled
+                    onClick={handleClick}
+                  >
+                    Review swap
+                  </SharedButton>
+                ) : (
+                  <SharedButton
+                    type="primary"
+                    size="large"
+                    onClick={handleClick}
+                  >
+                    Get final quote
+                  </SharedButton>
+                )}
+              </div>
             </div>
-            <div className="icon_change" />
-            <div className="form_input">
-              <SharedAssetInput
-                onAssetSelected={handleAssetSelect}
-                label="Swap to:"
-              />
+          )}
+          {activeActivity === "limit_order_swap" && (
+            <div className="form">
+              <div className="form_input">
+                <SharedAssetInput
+                  onAssetSelected={handleAssetSelect}
+                  label="You pay:"
+                />
+              </div>
+              <div className="icon_change" />
+              <div className="form_input">
+                <SharedAssetInput
+                  onAssetSelected={handleAssetSelect}
+                  label="You receive:"
+                />
+              </div>
+              <div className="form_input limit_order_price_input">
+                <SharedLimitOrderPrice
+                  onAssetSelected={handleAssetSelect}
+                  label="Price:"
+                />
+              </div>
+              <div className="settings_wrap">
+                <SwapTransactionSettings activeActivity={activeActivity} />
+              </div>
+              <div className="footer standard_width_padded">
+                {selectedCount < 3 ? (
+                  <SharedButton
+                    type="primary"
+                    size="large"
+                    isDisabled
+                    onClick={handleClick}
+                  >
+                    Review order
+                  </SharedButton>
+                ) : (
+                  <SharedButton
+                    type="primary"
+                    size="large"
+                    onClick={handleClick}
+                  >
+                    Review order
+                  </SharedButton>
+                )}
+              </div>
             </div>
-            <div className="settings_wrap">
-              <SwapTransactionSettings activeActivity={activeActivity} />
-            </div>
-            <div className="footer standard_width_padded">
-              {selectedCount < 2 ? (
-                <SharedButton
-                  type="primary"
-                  size="large"
-                  isDisabled
-                  onClick={handleClick}
-                >
-                  {activeActivity === "swap" && "Review swap"}
-                  {activeActivity === "limit_order_swap" && "Review order"}
-                </SharedButton>
-              ) : (
-                <SharedButton type="primary" size="large" onClick={handleClick}>
-                  Get final quote
-                </SharedButton>
-              )}
-            </div>
-          </div>
+          )}
         </div>
       </CorePage>
       <style jsx>
@@ -147,6 +199,9 @@ export default function Swap(): ReactElement {
           }
           .settings_wrap {
             margin-top: 16px;
+          }
+          .limit_order_price_input {
+            margin-top: 12px;
           }
         `}
       </style>
