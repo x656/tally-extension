@@ -2,6 +2,12 @@ import AjvJSONSchema, { JSONSchemaType } from "ajv"
 import AjvJTD, { JTDDataType } from "ajv/dist/jtd"
 import { ValidateFunction } from "ajv/dist/types"
 
+/**
+ * TODO create the proper organisation for the validation when using it to validate anything else
+ * a good starting point would a base validation class in /lib and
+ * a validation instance in every service
+ */
+
 // Below, the JTD and JSON Schema Ajv instances are lazily instantiatied so the
 // startup cost (which is not insignificant) is only paid when the relevant
 // validations are first requested.
